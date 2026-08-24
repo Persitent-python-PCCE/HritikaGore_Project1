@@ -4,7 +4,8 @@ from flask import (
     request,
     redirect,
     url_for,
-    session
+    session,
+    current_app
 )
 
 from dao.user_dao import UserDAO
@@ -80,10 +81,20 @@ def login():
         session["user_id"] = user.id
         session["user_role"] = user.role
 
+        current_app.logger.info(
+        "User login successful | user_id=%s | role=%s",
+        user.id,
+        user.role
+        )
+
         return response
 
     except ValueError as e:
+        current_app.logger.warning(
+        "Failed login attempt | email=%s",
+        email)
         return render_template("login.html",error=str(e))
+    
 
 
 @auth_controller.route("/users")

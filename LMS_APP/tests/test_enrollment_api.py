@@ -6,9 +6,7 @@ from models.user import User
 from config.database import db
 from werkzeug.security import generate_password_hash
 
-
 def get_student_token(client):
-
     response = client.post(
         "/api/v2/auth/login",
         json={
@@ -18,14 +16,11 @@ def get_student_token(client):
     )
 
     assert response.status_code == 200
-
     return response.get_json()["access_token"]
 
 
 def get_instructor_token(client):
-
     with client.application.app_context():
-
         instructor = User(
             name="Test Instructor",
             email="instructor@test.com",
@@ -37,8 +32,7 @@ def get_instructor_token(client):
         db.session.add(instructor)
         db.session.commit()
 
-    response = client.post(
-        "/api/v2/auth/login",
+    response = client.post("/api/v2/auth/login",
         json={
             "email": "instructor@test.com",
             "password": "password123"
@@ -46,12 +40,10 @@ def get_instructor_token(client):
     )
 
     assert response.status_code == 200
-
     return response.get_json()["access_token"]
 
 
 def create_course():
-
     course = Course(
         title="Python API Course",
         description="API Test Course",
@@ -65,9 +57,7 @@ def create_course():
 
 
 def test_api_student_can_enroll(client):
-
     course = create_course()
-
     token = get_student_token(client)
 
     response = client.post(

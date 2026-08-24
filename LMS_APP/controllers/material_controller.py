@@ -1,5 +1,4 @@
-from flask import (Blueprint, render_template, request, redirect, url_for, session, send_from_directory, make_response)
-from config.cache import cache
+from flask import (Blueprint, render_template, request, redirect, url_for, session, send_from_directory, make_response, current_app)
 import os
 from werkzeug.utils import secure_filename
 
@@ -173,6 +172,12 @@ def create_material(course_id):
             session["user_id"]
         )
 
+        current_app.logger.info("Material uploaded | course_id=%s | user_id=%s | filename=%s",
+        course_id,
+        session["user_id"],
+        filename
+        )
+
         return redirect(url_for("material_controller.materials", course_id=course_id))
 
     except ValueError as e:
@@ -221,6 +226,11 @@ def delete_material(material_id):
 
         material_service.delete_material(material_id)
 
+        current_app.logger.info("Material deleted | material_id=%s | course_id=%s | user_id=%s",
+        material_id,
+        material.course_id,
+        session["user_id"]
+        )
         return redirect(url_for("material_controller.materials", course_id=material.course_id))
 
     except ValueError as e:

@@ -5,7 +5,7 @@ from flask import (
     redirect,
     url_for,
     session, 
-    abort
+    abort, current_app
 )
 from dao.lesson_dao import LessonDAO
 from services.lesson_service import LessonService
@@ -145,6 +145,12 @@ def submit_quiz(quiz_id):
             db.session.add(answer)
 
         db.session.commit()
+
+        current_app.logger.info("Quiz submitted | quiz_id=%s | user_id=%s | score=%s",
+        quiz_id,
+        session["user_id"],
+        score
+        )
 
         return redirect(
             url_for(

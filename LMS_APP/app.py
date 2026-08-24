@@ -3,7 +3,7 @@ import os
 
 from config.database import db, init_db
 from config.jwt import jwt
-
+from config.logging_config import setup_logging
 from models.user import User
 from models.course import Course
 from models.module import Module
@@ -36,6 +36,8 @@ from controllers.rag_controller import rag_controller
 load_dotenv()
 
 app = Flask(__name__)
+setup_logging(app)
+
 app.secret_key = os.getenv("SECRET_KEY")
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 app.config["JWT_TOKEN_LOCATION"] = ["cookies", "headers"]
