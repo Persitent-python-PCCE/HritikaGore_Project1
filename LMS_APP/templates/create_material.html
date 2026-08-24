@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Material</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h2>Upload Material</h2>
+
+<p>
+    Course:
+    <strong>{{ course.title }}</strong>
+</p>
+
+<form
+    method="POST"
+    enctype="multipart/form-data"
+>
+
+    <label>
+        Material Title:
+    </label>
+
+    <br>
+
+    <input
+        type="text"
+        name="title"
+        required
+    >
+
+    <br><br>
+
+    <label>
+        Module:
+    </label>
+
+    <br>
+
+    <select name="module_id">
+
+        <option value="">
+            General Course Material
+        </option>
+
+        {% for module in modules %}
+
+        <option value="{{ module.id }}">
+            {{ module.title }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label>
+        Select File:
+    </label>
+
+    <br>
+
+    <input
+        type="file"
+        name="file"
+        required
+    >
+
+    <br><br>
+
+    <button type="submit">
+        Upload Material
+    </button>
+
+</form>
+
+{% if error %}
+
+<p style="color:red;">
+    {{ error }}
+</p>
+
+{% endif %}
+
+<br>
+
+<a href="{{ url_for(
+    'material_controller.materials',
+    course_id=course.id
+) }}">
+    Back to Materials
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

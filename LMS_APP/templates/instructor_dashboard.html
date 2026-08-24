@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Dashboard</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h2>Instructor Dashboard</h2>
+
+<p>Welcome, Instructor!</p>
+
+<hr>
+
+<h3>Course Management</h3>
+
+<a href="{{ url_for('course_controller.courses') }}">
+    My Courses
+</a>
+
+<br><br>
+
+<a href="{{ url_for('course_controller.create_course') }}">
+    Create New Course
+</a>
+
+<hr>
+
+<h3>Manage Learning Content</h3>
+
+<p>
+    Open <strong>My Courses</strong> to manage:
+</p>
+
+<ul>
+    <li>Courses</li>
+    <li>Modules</li>
+    <li>Lessons</li>
+    <li>Materials</li>
+    <li>Quizzes</li>
+    <li>Questions</li>
+    <li>Options</li>
+</ul>
+
+<a href="{{ url_for('course_controller.courses') }}">
+    Manage My Courses
+</a>
+
+<hr>
+
+<a href="{{ url_for('auth_controller.logout') }}">
+    Logout
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

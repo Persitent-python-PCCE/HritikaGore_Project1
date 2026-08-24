@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.title }} - Modules</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>{{ course.title }}</h1>
+
+<br>
+
+<a href="{{ url_for(
+    'material_controller.materials',
+    course_id=course.id
+) }}">
+    Course Materials
+</a>
+
+<br><br>
+
+<h2>Modules</h2>
+
+{% if modules %}
+
+    {% for module in modules %}
+
+        <div>
+
+            <h3>{{ module.title }}</h3>
+
+            <p>
+                {{ module.description }}
+            </p>
+
+            <a href="{{ url_for(
+                'lesson_controller.lessons',
+                module_id=module.id
+            ) }}">
+                View Lessons
+            </a>
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>
+        No modules are available for this course yet.
+    </p>
+
+{% endif %}
+
+<br>
+
+<a href="{{ url_for(
+    'enrollment_controller.my_courses'
+) }}">
+    Back to My Courses
+</a>
+
+<br><br>
+
+<a href="{{ url_for(
+    'auth_controller.dashboard'
+) }}">
+    Dashboard
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

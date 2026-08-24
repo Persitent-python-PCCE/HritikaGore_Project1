@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Courses</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>My Courses</h1>
+
+{% if courses %}
+
+    {% for course in courses %}
+
+        <div>
+
+            <h2>{{ course.title }}</h2>
+
+            <p>
+                {{ course.description }}
+            </p>
+
+            <a href="{{ url_for(
+                'module_controller.modules',
+                course_id=course.id
+            ) }}">
+                View Modules
+            </a>
+
+            <br><br>
+
+            <a href="{{ url_for(
+                'material_controller.materials',
+                course_id=course.id
+            ) }}">
+                Course Materials
+            </a>
+
+            <br><br>
+
+            <a href="{{ url_for(
+                'lesson_controller.course_progress',
+                course_id=course.id
+            ) }}">
+                View Progress
+            </a>
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>You are not enrolled in any courses.</p>
+
+{% endif %}
+
+<br>
+
+<a href="{{ url_for('auth_controller.dashboard') }}">
+    Back to Dashboard
+</a>
+
+<br><br>
+
+<a href="{{ url_for('course_controller.courses') }}">
+    Browse Courses
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>Create User</h1>
+
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+
+    <label>Name</label>
+    <input
+        type="text"
+        name="name"
+        required
+    >
+
+    <br><br>
+
+    <label>Email</label>
+    <input
+        type="email"
+        name="email"
+        required
+    >
+
+    <br><br>
+
+    <label>Password</label>
+    <input
+        type="password"
+        name="password"
+        required
+    >
+
+    <br><br>
+
+    <label>Role</label>
+
+    <select name="role" required>
+
+        <option value="student">
+            Student
+        </option>
+
+        <option value="instructor">
+            Instructor
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <button type="submit">
+        Create User
+    </button>
+
+</form>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

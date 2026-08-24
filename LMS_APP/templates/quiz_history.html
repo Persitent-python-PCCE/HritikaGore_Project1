@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz History</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <h2>My Quiz Results</h2>
+
+    {% if submissions %}
+
+    <table>
+      <tr>
+        <th>Quiz ID</th>
+        <th>Score</th>
+        <th>Submitted At</th>
+        <th>Result</th>
+      </tr>
+
+      {% for submission in submissions %}
+
+      <tr>
+        <td>{{ submission.quiz_id }}</td>
+
+        <td>{{ submission.score }}</td>
+
+        <td>{{ submission.submitted_at }}</td>
+
+        <td>
+          <a
+            href="{{ url_for(
+                'quiz_attempt_controller.quiz_result',
+                submission_id=submission.id
+            ) }}"
+          >
+            View Result
+          </a>
+        </td>
+      </tr>
+
+      {% endfor %}
+    </table>
+
+    {% else %}
+
+    <p>You have not attempted any quizzes yet.</p>
+
+    {% endif %}
+
+    <br />
+
+    <a href="{{ url_for('auth_controller.dashboard') }}"> Back to Dashboard </a>
+      <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

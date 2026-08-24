@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Progress</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h2>My Progress</h2>
+
+{% if progress %}
+
+    {% for item in progress %}
+
+        <div>
+            <p>
+                Lesson ID: {{ item.lesson_id }}
+            </p>
+
+            {% if item.completed %}
+                <p>Status: Completed</p>
+                <p>Completed at: {{ item.completed_at }}</p>
+            {% else %}
+                <p>Status: Not Completed</p>
+            {% endif %}
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No progress recorded yet.</p>
+
+{% endif %}
+
+<br>
+
+<a href="{{ url_for('auth_controller.dashboard') }}">
+    Back to Dashboard
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

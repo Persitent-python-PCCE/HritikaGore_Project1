@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Module</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+    <h2>Create Module</h2>
+
+    <p>Course: {{ course.title }}</p>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+
+        <label>Module Title:</label>
+        <input type="text" name="title" required>
+
+        <br><br>
+
+        <label>Description:</label>
+        <textarea name="description" required></textarea>
+
+        <br><br>
+
+        <button type="submit">Create Module</button>
+
+    </form>
+
+    <br>
+
+    <a href="/courses/{{ course.id }}/modules">
+        Back to Modules
+    </a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

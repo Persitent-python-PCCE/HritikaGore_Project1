@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ quiz.title }}</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>{{ quiz.title }}</h1>
+
+<p>{{ quiz.description }}</p>
+
+<hr>
+
+<form method="POST"
+      action="{{ url_for(
+          'quiz_attempt_controller.submit_quiz',
+          quiz_id=quiz.id
+      ) }}">
+
+    {% for question in questions %}
+
+        <h3>
+            {{ loop.index }}.
+            {{ question.question_text }}
+        </h3>
+
+        {% for option in question_options[question.id] %}
+
+            <label>
+
+                <input
+                    type="radio"
+                    name="question_{{ question.id }}"
+                    value="{{ option.id }}"
+                    required
+                >
+
+                {{ option.option_text }}
+
+            </label>
+
+            <br>
+
+        {% endfor %}
+
+        <hr>
+
+    {% endfor %}
+
+    <button type="submit">
+        Submit Quiz
+    </button>
+
+</form>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

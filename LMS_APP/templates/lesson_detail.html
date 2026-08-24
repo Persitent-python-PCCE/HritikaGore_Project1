@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ lesson.title }}</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>{{ lesson.title }}</h1>
+
+<p>
+    Course:
+    {{ course.title }}
+</p>
+
+<p>
+    Module:
+    {{ module.title }}
+</p>
+
+<hr>
+
+<h3>Lesson Content</h3>
+
+<div>
+    {{ lesson.content }}
+</div>
+
+<hr>
+
+{% if session.get("user_role") == "student" %}
+
+    {% if progress and progress.completed %}
+
+        <p>
+            <strong>✓ Lesson Completed</strong>
+        </p>
+
+        <p>
+            Completed at:
+            {{ progress.completed_at }}
+        </p>
+
+    {% else %}
+
+        <form method="POST"
+              action="{{ url_for(
+                  'lesson_controller.complete_lesson',
+                  lesson_id=lesson.id
+              ) }}">
+
+            <button type="submit">
+                Mark Lesson as Complete
+            </button>
+
+        </form>
+
+    {% endif %}
+
+{% endif %}
+
+<br>
+
+<a href="{{ url_for(
+    'lesson_controller.lessons',
+    module_id=module.id
+) }}">
+    Back to Lessons
+</a>
+
+<br><br>
+
+<a href="{{ url_for(
+    'lesson_controller.course_progress',
+    course_id=course.id
+) }}">
+    View Course Progress
+</a>
+
+<br><br>
+
+<a href="{{ url_for(
+    'auth_controller.dashboard'
+) }}">
+    Dashboard
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

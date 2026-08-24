@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Question</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>Edit Question</h1>
+
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+
+    <label>Question:</label><br>
+
+    <textarea
+        name="question_text"
+        required
+    >{{ question.question_text }}</textarea>
+
+    <br><br>
+
+    <label>Explanation:</label><br>
+
+    <textarea
+        name="explanation"
+    >{{ question.explanation or "" }}</textarea>
+
+    <br><br>
+
+    <label>Difficulty:</label>
+
+    <select name="difficulty" required>
+
+        <option value="easy"
+            {% if question.difficulty == "easy" %}
+                selected
+            {% endif %}
+        >
+            Easy
+        </option>
+
+        <option value="medium"
+            {% if question.difficulty == "medium" %}
+                selected
+            {% endif %}
+        >
+            Medium
+        </option>
+
+        <option value="hard"
+            {% if question.difficulty == "hard" %}
+                selected
+            {% endif %}
+        >
+            Hard
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <button type="submit">
+        Update Question
+    </button>
+
+</form>
+
+<br>
+
+<a href="{{ url_for(
+    'question_controller.questions',
+    quiz_id=quiz.id
+) }}">
+    Back to Questions
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

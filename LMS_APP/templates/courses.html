@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <h2>Courses</h2>
+
+    {% for course in courses %}
+
+    <div>
+      <h3>{{ course.title }}</h3>
+
+      <p>{{ course.description }}</p>
+
+      <p>Instructor ID: {{ course.instructor_id }}</p>
+
+      <!-- ================= STUDENT ================= -->
+
+      {% if session.get("user_role") == "student" %}
+
+      <form
+        method="POST"
+        action="{{ url_for(
+                'enrollment_controller.enroll',
+                course_id=course.id
+            ) }}"
+      >
+        <button type="submit">Enroll</button>
+      </form>
+
+      {% endif %}
+
+      <!-- ================= INSTRUCTOR ================= -->
+
+      {% if session.get("user_role") == "instructor" and course.instructor_id ==
+      session.get("user_id") %}
+
+      <h4>Course Management</h4>
+
+      <a
+        href="{{ url_for(
+            'course_controller.edit_course',
+            course_id=course.id
+        ) }}"
+      >
+        Edit Course
+      </a>
+
+      <br /><br />
+
+      <a
+        href="{{ url_for(
+            'module_controller.modules',
+            course_id=course.id
+        ) }}"
+      >
+        Manage Modules
+      </a>
+
+      <br /><br />
+
+      <a
+        href="{{ url_for(
+            'material_controller.materials',
+            course_id=course.id
+        ) }}"
+      >
+        Manage Materials
+      </a>
+
+      <br /><br />
+
+      <a
+        href="{{ url_for(
+            'material_controller.create_material',
+            course_id=course.id
+        ) }}"
+      >
+        Upload Material
+      </a>
+
+      <br /><br />
+
+      <form
+        method="POST"
+        action="{{ url_for(
+                'course_controller.delete_course',
+                course_id=course.id
+            ) }}"
+        style="display: inline"
+      >
+        <button type="submit">Delete Course</button>
+      </form>
+
+      {% endif %}
+
+      <!-- ================= GENERAL COURSE LINKS ================= -->
+
+      <br /><br />
+
+      <a
+        href="{{ url_for(
+        'module_controller.modules',
+        course_id=course.id
+    ) }}"
+      >
+        View Modules
+      </a>
+    </div>
+
+    <hr />
+
+    {% else %}
+
+    <p>No courses available.</p>
+
+    {% endfor %}
+
+    <!-- ================= CREATE COURSE ================= -->
+
+    {% if session.get("user_role") == "instructor" %}
+
+    <br />
+
+    <a
+      href="{{ url_for(
+        'course_controller.create_course'
+    ) }}"
+    >
+      Create Course
+    </a>
+
+    {% endif %}
+
+    <br /><br />
+
+    <a href="{{ url_for('auth_controller.dashboard') }}"> Back to Dashboard </a>
+      <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

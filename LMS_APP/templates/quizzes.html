@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzes</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <h1>Quizzes</h1>
+
+    <h2>{{ lesson.title }}</h2>
+
+    {% if session.get("user_role") == "instructor" %}
+
+    <a
+      href="{{ url_for(
+    'quiz_controller.create_quiz',
+    lesson_id=lesson.id
+) }}"
+    >
+      Create Quiz
+    </a>
+
+    {% endif %}
+
+    <hr />
+
+    {% if quizzes %} {% for quiz in quizzes %}
+
+    <div>
+      <h3>{{ quiz.title }}</h3>
+
+      <p>{{ quiz.description }}</p>
+
+      {% if session.get("user_role") == "student" %}
+
+      <a
+        href="{{ url_for(
+                    'quiz_attempt_controller.take_quiz',
+                    quiz_id=quiz.id
+                ) }}"
+      >
+        Take Quiz
+      </a>
+
+      {% endif %} {% if session.get("user_role") == "instructor" %}
+
+      <a
+        href="{{ url_for(
+    'quiz_controller.edit_quiz',
+    quiz_id=quiz.id
+) }}"
+      >
+        Edit Quiz
+      </a>
+
+      <a
+        href="{{ url_for(
+    'quiz_attempt_controller.quiz_submissions',
+    quiz_id=quiz.id
+) }}"
+      >
+        View Student Results
+      </a>
+      
+
+      <a
+        href="{{ url_for(
+                    'question_controller.questions',
+                    quiz_id=quiz.id
+                ) }}"
+      >
+        Manage Questions
+      </a>
+
+      <form
+        method="POST"
+        action="{{ url_for(
+                        'quiz_controller.delete_quiz',
+                        quiz_id=quiz.id
+                    ) }}"
+        style="display: inline"
+      >
+        <button type="submit">Delete</button>
+      </form>
+
+      {% endif %}
+    </div>
+
+    <hr />
+
+    {% endfor %} {% else %}
+
+    <p>No quizzes found.</p>
+
+    {% endif %}
+
+    <a
+      href="{{ url_for(
+    'lesson_controller.lessons',
+    module_id=lesson.module_id
+) }}"
+    >
+      Back to Lessons
+    </a>
+      <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

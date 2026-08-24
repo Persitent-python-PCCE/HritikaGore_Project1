@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h2>Options</h2>
+
+<h3>{{ question.question_text }}</h3>
+
+<hr>
+
+{% if options %}
+
+    {% for option in options %}
+
+        <div>
+
+            <p>
+                {{ option.option_text }}
+
+                {% if option.is_correct %}
+                    <strong>(Correct)</strong>
+                {% endif %}
+            </p>
+
+            {% if session.get("user_role") == "instructor" %}
+
+                <a href="{{ url_for(
+                    'option_controller.edit_option',
+                    option_id=option.id
+                ) }}">
+                    Edit
+                </a>
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'option_controller.delete_option',
+                        option_id=option.id
+                    ) }}"
+                    style="display:inline;"
+                >
+                    <button type="submit">
+                        Delete
+                    </button>
+                </form>
+
+            {% endif %}
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No options found.</p>
+
+{% endif %}
+
+{% if session.get("user_role") == "instructor" %}
+
+    <a href="{{ url_for(
+        'option_controller.create_option',
+        question_id=question.id
+    ) }}">
+        Add Option
+    </a>
+
+{% endif %}
+
+<br><br>
+
+<a href="{{ url_for(
+    'question_controller.questions',
+    quiz_id=question.quiz_id
+) }}">
+    Back to Questions
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

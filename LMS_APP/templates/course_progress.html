@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Progress</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>{{ course.title }}</h1>
+
+<h2>Course Progress</h2>
+
+<hr>
+
+<h3>
+    {{ "%.0f"|format(progress.percentage) }}%
+</h3>
+
+<progress
+    value="{{ progress.percentage }}"
+    max="100">
+</progress>
+
+<p>
+    {{ progress.completed_lessons }}
+    /
+    {{ progress.total_lessons }}
+    lessons completed
+</p>
+
+<p>
+    <strong>Completed:</strong>
+    {{ progress.completed_lessons }}
+</p>
+
+<p>
+    <strong>Remaining:</strong>
+    {{ progress.total_lessons - progress.completed_lessons }}
+</p>
+
+<p>
+    <strong>Total Lessons:</strong>
+    {{ progress.total_lessons }}
+</p>
+
+<hr>
+
+<h2>Quiz History</h2>
+
+{% if quiz_history %}
+
+    {% for submission in quiz_history %}
+
+        {% set quiz = quizzes
+            |selectattr("id", "equalto", submission.quiz_id)
+            |first
+        %}
+
+        <div>
+
+            {% if quiz %}
+
+                <h3>
+                    {{ quiz.title }}
+                </h3>
+
+            {% else %}
+
+                <h3>
+                    Quiz
+                </h3>
+
+            {% endif %}
+
+            <p>
+                <strong>Score:</strong>
+                {{ submission.score }}
+            </p>
+
+            <p>
+                <strong>Submitted:</strong>
+                {{ submission.submitted_at }}
+            </p>
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>
+        You have not attempted any quizzes for this course yet.
+    </p>
+
+{% endif %}
+
+<br>
+
+<a href="{{ url_for(
+    'enrollment_controller.my_courses'
+) }}">
+    Back to My Courses
+</a>
+
+<br><br>
+
+<a href="{{ url_for(
+    'course_controller.courses'
+) }}">
+    Browse Courses
+</a>
+
+<br><br>
+
+<a href="{{ url_for(
+    'auth_controller.dashboard'
+) }}">
+    Dashboard
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

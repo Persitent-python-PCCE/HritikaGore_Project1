@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Materials</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h2>{{ course.title }}</h2>
+
+<h3>Course Materials</h3>
+
+{% for material in materials %}
+
+<div>
+
+    <h4>{{ material.title }}</h4>
+
+    <p>
+        Type: {{ material.material_type }}
+    </p>
+
+    <a
+        href="{{ url_for(
+            'material_controller.download_material',
+            material_id=material.id
+        ) }}"
+        target="_blank"
+    >
+        Open Material
+    </a>
+
+    {% if session.get("user_role") == "instructor"
+          and course.instructor_id == session.get("user_id") %}
+
+        <form
+            method="POST"
+            action="{{ url_for(
+                'material_controller.delete_material',
+                material_id=material.id
+            ) }}"
+            style="display:inline;"
+        >
+
+            <button type="submit">
+                Delete
+            </button>
+
+        </form>
+
+    {% endif %}
+
+</div>
+
+<hr>
+
+{% else %}
+
+<p>
+    No materials available.
+</p>
+
+{% endfor %}
+
+
+{% if session.get("user_role") == "instructor"
+      and course.instructor_id == session.get("user_id") %}
+
+    <a
+        href="{{ url_for(
+            'material_controller.create_material',
+            course_id=course.id
+        ) }}"
+    >
+        Upload Material
+    </a>
+
+{% endif %}
+
+<br><br>
+
+<a href="{{ url_for('course_controller.courses') }}">
+    Back to Courses
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

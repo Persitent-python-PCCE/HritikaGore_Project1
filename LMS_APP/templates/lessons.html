@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ module.title }} - Lessons</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <h1>{{ module.title }}</h1>
+
+    <h2>Lessons</h2>
+
+    {% if lessons %} {% for lesson in lessons %}
+
+    <div>
+      <h3>{{ lesson.title }}</h3>
+
+      <p>{{ lesson.content }}</p>
+
+      <a
+        href="{{ url_for(
+                'lesson_controller.lesson_detail',
+                lesson_id=lesson.id
+            ) }}"
+      >
+        Open Lesson
+      </a>
+
+      <br /><br />
+
+      <a
+        href="{{ url_for(
+                'quiz_controller.quizzes',
+                lesson_id=lesson.id
+            ) }}"
+      >
+        View Quizzes
+      </a>
+
+      {% if session.get("user_role") == "instructor" %}
+
+      <br /><br />
+
+      <a
+        href="{{ url_for(
+                    'quiz_controller.create_quiz',
+                    lesson_id=lesson.id
+                ) }}"
+      >
+        Create Quiz
+      </a>
+
+      {% endif %}
+    </div>
+
+    <hr />
+
+    {% endfor %} {% else %}
+
+    <p>No lessons are available for this module yet.</p>
+
+    {% endif %}
+
+    <br />
+
+    <a
+      href="{{ url_for(
+    'module_controller.modules',
+    course_id=module.course_id
+) }}"
+    >
+      Back to Modules
+    </a>
+
+    <br /><br />
+
+    <a
+      href="{{ url_for(
+    'auth_controller.dashboard'
+) }}"
+    >
+      Dashboard
+    </a>
+      <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

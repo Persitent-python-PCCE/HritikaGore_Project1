@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Option</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h2>Add Option</h2>
+
+<h3>{{ question.question_text }}</h3>
+
+<form method="POST">
+
+    <label>Option:</label>
+    <input type="text" name="option_text" required>
+
+    <br><br>
+
+    <label>
+        <input type="checkbox" name="is_correct" value="true">
+        Correct Answer
+    </label>
+
+    <br><br>
+
+    <button type="submit">Add Option</button>
+
+</form>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

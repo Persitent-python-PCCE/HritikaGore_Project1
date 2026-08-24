@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Quiz</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <h1>Edit Quiz</h1>
+
+    <h2>{{ lesson.title }}</h2>
+
+    {% if error %}
+    <p style="color: red">{{ error }}</p>
+    {% endif %}
+
+    <hr />
+
+    <form
+      method="POST"
+      action="{{ url_for(
+          'quiz_controller.edit_quiz',
+          quiz_id=quiz.id
+      ) }}"
+    >
+      <label>Quiz Title:</label>
+      <br />
+
+      <input type="text" name="title" value="{{ quiz.title }}" required />
+
+      <br /><br />
+
+      <label>Quiz Description:</label>
+      <br />
+
+      <textarea name="description" rows="4" cols="50">
+{{ quiz.description }}</textarea
+      >
+
+      <br /><br />
+
+      <button type="submit">Update Quiz</button>
+    </form>
+
+    <hr />
+
+    <h2>Questions</h2>
+
+    <a
+      href="{{ url_for(
+    'question_controller.create_question',
+    quiz_id=quiz.id
+) }}"
+    >
+      + Add Question
+    </a>
+
+    <br /><br />
+
+    {% if questions %} {% for question in questions %}
+
+    <div>
+      <h3>{{ loop.index }}. {{ question.question_text }}</h3>
+
+      <p>Difficulty: {{ question.difficulty }}</p>
+
+      {% if question.explanation %}
+      <p>Explanation: {{ question.explanation }}</p>
+      {% endif %}
+
+      <h4>Options</h4>
+
+      {% if question_options[question.id] %}
+
+      <ul>
+        {% for option in question_options[question.id] %}
+
+        <li>
+          {{ option.option_text }} {% if option.is_correct %}
+          <strong> ✓ Correct</strong>
+          {% endif %}
+
+          <a
+            href="{{ url_for(
+                'option_controller.edit_option',
+                option_id=option.id
+            ) }}"
+          >
+            Edit Option
+          </a>
+
+          <form
+            method="POST"
+            action="{{ url_for(
+                    'option_controller.delete_option',
+                    option_id=option.id
+                ) }}"
+            style="display: inline"
+          >
+            <button type="submit">Delete Option</button>
+          </form>
+        </li>
+
+        {% endfor %}
+      </ul>
+
+      {% else %}
+
+      <p>No options yet.</p>
+
+      {% endif %}
+
+      <a
+        href="{{ url_for(
+    'option_controller.create_option',
+    question_id=question.id
+) }}"
+      >
+        + Add Option
+      </a>
+
+      <br /><br />
+
+      <a
+        href="{{ url_for(
+                'question_controller.edit_question',
+                question_id=question.id
+            ) }}"
+      >
+        Edit Question
+      </a>
+
+      <form
+        method="POST"
+        action="{{ url_for(
+                    'question_controller.delete_question',
+                    question_id=question.id
+                ) }}"
+        style="display: inline"
+      >
+        <button type="submit">Delete Question</button>
+      </form>
+    </div>
+
+    <hr />
+
+    {% endfor %} {% else %}
+
+    <p>No questions found.</p>
+
+    {% endif %}
+
+    <br />
+
+    <a
+      href="{{ url_for(
+    'quiz_controller.quizzes',
+    lesson_id=lesson.id
+) }}"
+    >
+      Cancel
+    </a>
+      <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

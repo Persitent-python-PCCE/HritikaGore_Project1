@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>{{ quiz.title }} - Result</h1>
+
+<h2>
+    Score: {{ submission.score }} / {{ total }}
+</h2>
+
+<h2>
+    Percentage:
+    {{ "%.2f"|format(percentage) }}%
+</h2>
+
+<p>
+    Submitted at: {{ submission.submitted_at }}
+</p>
+
+<a href="{{ url_for(
+    'quiz_controller.quizzes',
+    lesson_id=quiz.lesson_id
+) }}">
+    Back to Quizzes
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Results</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <h1>Student Results</h1>
+
+    <h2>{{ quiz.title }}</h2>
+
+    <hr />
+
+    {% if submissions %}
+
+    <table>
+      <tr>
+        <th>Student ID</th>
+        <th>Score</th>
+        <th>Submitted At</th>
+      </tr>
+
+      {% for submission in submissions %}
+
+      <tr>
+        <td>{{ submission.student_id }}</td>
+
+        <td>{{ submission.score }}</td>
+
+        <td>{{ submission.submitted_at }}</td>
+      </tr>
+
+      {% endfor %}
+    </table>
+
+    {% else %}
+
+    <p>No students have attempted this quiz yet.</p>
+
+    {% endif %}
+
+    <br />
+
+    <a
+      href="{{ url_for(
+    'quiz_controller.quizzes',
+    lesson_id=quiz.lesson_id
+) }}"
+    >
+      Back to Quizzes
+    </a>
+      <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

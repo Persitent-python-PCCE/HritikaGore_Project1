@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Users</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>User Management</h1>
+
+<a href="{{ url_for('admin_controller.create_user') }}">
+    Create User
+</a>
+
+<table>
+
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+    </tr>
+
+    {% for user in users %}
+
+    <tr>
+
+        <td>{{ user.id }}</td>
+
+        <td>{{ user.name }}</td>
+
+        <td>{{ user.email }}</td>
+
+        <td>{{ user.role }}</td>
+
+        <td>
+            {% if user.is_active %}
+                Active
+            {% else %}
+                Disabled
+            {% endif %}
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

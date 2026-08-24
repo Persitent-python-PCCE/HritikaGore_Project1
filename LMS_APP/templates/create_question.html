@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Question</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>Add Question</h1>
+
+<h2>{{ quiz.title }}</h2>
+
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+
+    <label>Question</label>
+
+    <br>
+
+    <textarea
+        name="question_text"
+        rows="4"
+        required
+    ></textarea>
+
+    <br><br>
+
+    <label>Difficulty</label>
+
+    <br>
+
+    <select name="difficulty">
+
+        <option value="easy">
+            Easy
+        </option>
+
+        <option value="medium" selected>
+            Medium
+        </option>
+
+        <option value="hard">
+            Hard
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <label>Explanation</label>
+
+    <br>
+
+    <textarea
+        name="explanation"
+        rows="4"
+    ></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Create Question
+    </button>
+
+</form>
+
+<br>
+
+<a href="{{ url_for(
+    'question_controller.questions',
+    quiz_id=quiz.id
+) }}">
+    Cancel
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

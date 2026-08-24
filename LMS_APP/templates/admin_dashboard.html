@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h2>Admin Dashboard</h2>
+
+<p>Welcome, Admin!</p>
+
+<hr>
+
+<h3>User Management</h3>
+
+<a href="{{ url_for('admin_controller.users') }}">
+    Manage Users
+</a>
+
+<br><br>
+
+<h3>Course Management</h3>
+
+<a href="{{ url_for('course_controller.courses') }}">
+    View All Courses
+</a>
+
+<br><br>
+
+<hr>
+
+<h3>Administration</h3>
+
+<p>
+    From the user management page you can:
+</p>
+
+<ul>
+    <li>View users</li>
+    <li>View user roles</li>
+    <li>Enable users</li>
+    <li>Disable users</li>
+</ul>
+
+<hr>
+
+<a href="{{ url_for('auth_controller.logout') }}">
+    Logout
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

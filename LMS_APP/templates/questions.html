@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>{{ quiz.title }}</h1>
+
+<p>{{ quiz.description }}</p>
+
+{% if session.get("user_role") == "instructor" %}
+
+<a href="{{ url_for(
+    'question_controller.create_question',
+    quiz_id=quiz.id
+) }}">
+    Add Question
+</a>
+
+{% endif %}
+
+<hr>
+
+{% if questions %}
+
+    {% for question in questions %}
+
+        <div>
+
+            <h3>
+                {{ loop.index }}. {{ question.question_text }}
+            </h3>
+
+            <p>
+                Difficulty: {{ question.difficulty }}
+            </p>
+
+            {% if question.explanation %}
+                <p>
+                    Explanation: {{ question.explanation }}
+                </p>
+            {% endif %}
+
+            <h4>Options</h4>
+
+            {% set options = question_options[question.id] %}
+
+            {% if options %}
+
+                {% for option in options %}
+
+                    <p>
+                        {{ option.option_text }}
+
+                        {% if option.is_correct %}
+                            <strong>(Correct)</strong>
+                        {% endif %}
+
+                        {% if session.get("user_role") == "instructor" %}
+
+                            <form
+                                method="POST"
+                                action="{{ url_for(
+                                    'option_controller.delete_option',
+                                    option_id=option.id
+                                ) }}"
+                                style="display:inline;"
+                            >
+
+                                <button type="submit">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+                    </p>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No options added.</p>
+
+            {% endif %}
+
+            {% if session.get("user_role") == "instructor" %}
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'option_controller.create_option',
+                        question_id=question.id
+                    ) }}"
+                >
+
+                    <input
+                        type="text"
+                        name="option_text"
+                        placeholder="Option text"
+                        required
+                    >
+
+                    <select name="is_correct">
+
+                        <option value="false">
+                            Incorrect
+                        </option>
+
+                        <option value="true">
+                            Correct
+                        </option>
+
+                    </select>
+
+                    <button type="submit">
+                        Add Option
+                    </button>
+
+                </form>
+
+                <br>
+
+                <a href="{{ url_for(
+                    'question_controller.edit_question',
+                    question_id=question.id
+                ) }}">
+                    Edit Question
+                </a>
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'question_controller.delete_question',
+                        question_id=question.id
+                    ) }}"
+                    style="display:inline;"
+                >
+
+                    <button type="submit">
+                        Delete Question
+                    </button>
+
+                </form>
+
+            {% endif %}
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No questions found.</p>
+
+{% endif %}
+
+<a href="{{ url_for(
+    'quiz_controller.quizzes',
+    lesson_id=quiz.lesson_id
+) }}">
+    Back to Quizzes
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Option</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem("lms-theme");
+        var theme = stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+<h1>Edit Option</h1>
+
+<h2>{{ question.question_text }}</h2>
+
+<hr>
+
+<form method="POST"
+      action="{{ url_for(
+          'option_controller.edit_option',
+          option_id=option.id
+      ) }}">
+
+    <label>Option:</label>
+
+    <br>
+
+    <input
+        type="text"
+        name="option_text"
+        value="{{ option.option_text }}"
+        required
+    >
+
+    <br><br>
+
+    <label>Correct Answer:</label>
+
+    <select name="is_correct">
+
+        <option
+            value="true"
+            {% if option.is_correct %}selected{% endif %}
+        >
+            Yes
+        </option>
+
+        <option
+            value="false"
+            {% if not option.is_correct %}selected{% endif %}
+        >
+            No
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <button type="submit">
+        Update Option
+    </button>
+
+</form>
+
+<br>
+
+<a href="{{ url_for(
+    'quiz_controller.edit_quiz',
+    quiz_id=question.quiz_id
+) }}">
+    Cancel
+</a>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>
