@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Progress</title>
     <script>
       (function () {
@@ -22,36 +22,29 @@
 
 <hr>
 
-<h3>
-    {{ "%.0f"|format(progress.percentage) }}%
-</h3>
-
 <progress
     value="{{ progress.percentage }}"
     max="100">
 </progress>
 
-<p>
-    {{ progress.completed_lessons }}
-    /
-    {{ progress.total_lessons }}
-    lessons completed
-</p>
-
-<p>
-    <strong>Completed:</strong>
-    {{ progress.completed_lessons }}
-</p>
-
-<p>
-    <strong>Remaining:</strong>
-    {{ progress.total_lessons - progress.completed_lessons }}
-</p>
-
-<p>
-    <strong>Total Lessons:</strong>
-    {{ progress.total_lessons }}
-</p>
+<div class="stats">
+    <div class="stat">
+        <div class="value">{{ "%.0f"|format(progress.percentage) }}%</div>
+        <div class="label">Overall Progress</div>
+    </div>
+    <div class="stat">
+        <div class="value">{{ progress.completed_lessons }}</div>
+        <div class="label">Completed</div>
+    </div>
+    <div class="stat">
+        <div class="value">{{ progress.total_lessons - progress.completed_lessons }}</div>
+        <div class="label">Remaining</div>
+    </div>
+    <div class="stat">
+        <div class="value">{{ progress.total_lessons }}</div>
+        <div class="label">Total Lessons</div>
+    </div>
+</div>
 
 <hr>
 

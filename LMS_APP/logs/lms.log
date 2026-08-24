@@ -1,0 +1,5 @@
+2026-08-24 06:09:27,279 | INFO | app | LMS application logging initialized
+2026-08-24 06:09:38,978 | INFO | app | LMS application logging initialized
+2026-08-24 06:09:47,262 | INFO | app | User login successful | user_id=2 | role=instructor
+2026-08-24 06:11:17,110 | INFO | app | Courses viewed | user_id=2 | count=5
+2026-08-24 06:11:30,405 | INFO | app | User login successful | user_id=5 | role=student

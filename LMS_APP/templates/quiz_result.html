@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Result</title>
     <script>
       (function () {
@@ -18,14 +17,16 @@
 
 <h1>{{ quiz.title }} - Result</h1>
 
-<h2>
-    Score: {{ submission.score }} / {{ total }}
-</h2>
-
-<h2>
-    Percentage:
-    {{ "%.2f"|format(percentage) }}%
-</h2>
+<div class="stats">
+    <div class="stat">
+        <div class="value">{{ submission.score }} / {{ total }}</div>
+        <div class="label">Score</div>
+    </div>
+    <div class="stat">
+        <div class="value">{{ "%.2f"|format(percentage) }}%</div>
+        <div class="label">Percentage</div>
+    </div>
+</div>
 
 <p>
     Submitted at: {{ submission.submitted_at }}

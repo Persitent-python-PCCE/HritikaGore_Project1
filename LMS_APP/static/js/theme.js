@@ -1,3 +1,15 @@
+/* ============================================================
+   LMS App — Theme persistence
+   - Respects the OS/browser color scheme by default.
+   - Remembers the user's manual choice (localStorage), so it
+     stays the same across every page and future visits.
+   - Injects a floating toggle button automatically — no HTML
+     needed on any page.
+   Note: the tiny inline snippet in <head> (see instructions)
+   already sets the theme before the page paints, so there's
+   no flash of the wrong theme. This file just wires up the
+   toggle button.
+   ============================================================ */
 
 (function () {
   var STORAGE_KEY = "lms-theme";
