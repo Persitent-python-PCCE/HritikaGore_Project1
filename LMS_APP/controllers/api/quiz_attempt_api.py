@@ -66,11 +66,6 @@ enrollment_service = EnrollmentService(
     enrollment_dao
 )
 
-
-# --------------------------------------------------
-# SERIALIZERS
-# --------------------------------------------------
-
 def option_to_dict(option):
     return {
         "id": option.id,
@@ -98,10 +93,7 @@ def question_to_dict(question):
     }
 
 
-def submission_to_dict(
-    submission,
-    total_questions=None
-):
+def submission_to_dict(submission,  total_questions=None):
     percentage = None
 
     if total_questions is not None:
@@ -146,19 +138,10 @@ def get_quiz_course(quiz_id):
 
     return quiz, lesson, module, course
 
-
-# --------------------------------------------------
-# TAKE QUIZ
-# --------------------------------------------------
-
-@api_v2.route(
-    "/quizzes/<int:quiz_id>/take",
-    methods=["GET"]
-)
+@api_v2.route("/quizzes/<int:quiz_id>/take",methods=["GET"])
 @jwt_required()
 @role_required("student")
 def take_quiz(quiz_id):
-
     try:
         quiz, lesson, module, course = (
             get_quiz_course(quiz_id)
@@ -208,18 +191,10 @@ def take_quiz(quiz_id):
         }), 404
 
 
-# --------------------------------------------------
-# SUBMIT QUIZ
-# --------------------------------------------------
-
-@api_v2.route(
-    "/quizzes/<int:quiz_id>/submit",
-    methods=["POST"]
-)
+@api_v2.route("/quizzes/<int:quiz_id>/submit",methods=["POST"])
 @jwt_required()
 @role_required("student")
 def submit_quiz(quiz_id):
-
     data = request.get_json(
         silent=True
     )
@@ -245,8 +220,7 @@ def submit_quiz(quiz_id):
             )
         )
 
-        if not (
-            enrollment
+        if not (enrollment
             and enrollment.status.lower() == "active"
         ):
             return jsonify({
@@ -272,7 +246,6 @@ def submit_quiz(quiz_id):
         selected_answers = []
 
         for answer_data in answers:
-
             question_id = answer_data.get(
                 "question_id"
             )
@@ -286,7 +259,6 @@ def submit_quiz(quiz_id):
                     "error": "Each answer requires question_id and option_id"
                 }), 400
 
-            # Make sure question belongs to this quiz
             question = next(
                 (
                     q for q in questions
@@ -337,19 +309,15 @@ def submit_quiz(quiz_id):
         )
 
         for selected_answer in selected_answers:
-
             answer = Answer(
                 submission_id=submission.id,
-                question_id=selected_answer[
-                    "question_id"
-                ],
+                question_id=selected_answer["question_id"],
                 selected_option_id=selected_answer[
                     "option_id"
                 ]
             )
 
             db.session.add(answer)
-
         db.session.commit()
 
         total = len(questions)
@@ -377,17 +345,9 @@ def submit_quiz(quiz_id):
         }), 500
 
 
-# --------------------------------------------------
-# VIEW SINGLE RESULT
-# --------------------------------------------------
-
-@api_v2.route(
-    "/quiz-submissions/<int:submission_id>",
-    methods=["GET"]
-)
+@api_v2.route("/quiz-submissions/<int:submission_id>", methods=["GET"])
 @jwt_required()
 def get_quiz_result(submission_id):
-
     try:
         submission = (
             submission_service.get_submission(
@@ -415,10 +375,9 @@ def get_quiz_result(submission_id):
             module.course_id
         )
 
-        # Student can only see own result
         if submission.student_id != current_user_id:
 
-            # Instructor can see results
+          
             if course.instructor_id != current_user_id:
                 return jsonify({
                     "error": "Access denied"
@@ -450,18 +409,11 @@ def get_quiz_result(submission_id):
         }), 404
 
 
-# --------------------------------------------------
-# STUDENT QUIZ HISTORY
-# --------------------------------------------------
 
-@api_v2.route(
-    "/student/quiz-results",
-    methods=["GET"]
-)
+@api_v2.route("/student/quiz-results",methods=["GET"])
 @jwt_required()
 @role_required("student")
 def student_quiz_results():
-
     try:
         current_user_id = int(
             get_jwt_identity()
@@ -510,18 +462,11 @@ def student_quiz_results():
         }), 404
 
 
-# --------------------------------------------------
-# INSTRUCTOR: VIEW QUIZ SUBMISSIONS
-# --------------------------------------------------
 
-@api_v2.route(
-    "/quizzes/<int:quiz_id>/submissions",
-    methods=["GET"]
-)
+@api_v2.route("/quizzes/<int:quiz_id>/submissions",methods=["GET"])
 @jwt_required()
 @role_required("instructor")
 def get_quiz_submissions(quiz_id):
-
     try:
         quiz, lesson, module, course = (
             get_quiz_course(quiz_id)
@@ -535,10 +480,7 @@ def get_quiz_submissions(quiz_id):
             return jsonify({
                 "error": "You can only view results for your own quizzes"
             }), 403
-
-        # Get all submissions for the quiz.
-        # If your DAO doesn't have this method yet,
-        # we will add it next.
+        
         submissions = (
             submission_dao.get_quiz_submissions(
                 quiz_id

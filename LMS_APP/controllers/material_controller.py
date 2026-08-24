@@ -55,17 +55,12 @@ enrollment_service = EnrollmentService(enrollment_dao)
 
 @material_controller.route("/courses/<int:course_id>/materials")
 def materials(course_id):
-
     if "user_id" not in session:
-        return redirect(
-            url_for("auth_controller.login")
-        )
+        return redirect(url_for("auth_controller.login"))
 
     try:
         course = course_service.get_course(course_id)
-
         materials = material_service.get_course_materials(course_id)
-
         response = render_template(
             "materials.html",
             course=course,
@@ -106,7 +101,6 @@ def create_material(course_id):
         title = request.form.get("title")
         module_id = request.form.get("module_id")
         file = request.files.get("file")
-
 
         if not file or not file.filename:
             return render_template("create_material.html",

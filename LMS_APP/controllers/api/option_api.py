@@ -73,18 +73,9 @@ def instructor_owns_question(question):
     )
 
 
-# =========================================================
-# GET OPTIONS FOR QUESTION
-# GET /api/v2/questions/<question_id>/options
-# =========================================================
-
-@api_v2.route(
-    "/questions/<int:question_id>/options",
-    methods=["GET"]
-)
+@api_v2.route("/questions/<int:question_id>/options", methods=["GET"])
 @jwt_required()
 def get_question_options(question_id):
-
     try:
         question_service.get_question(
             question_id
@@ -105,18 +96,9 @@ def get_question_options(question_id):
         }), 404
 
 
-# =========================================================
-# GET SINGLE OPTION
-# GET /api/v2/options/<option_id>
-# =========================================================
-
-@api_v2.route(
-    "/options/<int:option_id>",
-    methods=["GET"]
-)
+@api_v2.route("/options/<int:option_id>", methods=["GET"])
 @jwt_required()
 def get_option(option_id):
-
     try:
         option = option_service.get_option(
             option_id
@@ -132,19 +114,10 @@ def get_option(option_id):
         }), 404
 
 
-# =========================================================
-# CREATE OPTION
-# POST /api/v2/questions/<question_id>/options
-# =========================================================
-
-@api_v2.route(
-    "/questions/<int:question_id>/options",
-    methods=["POST"]
-)
+@api_v2.route( "/questions/<int:question_id>/options", methods=["POST"])
 @jwt_required()
 @role_required("instructor")
 def create_option(question_id):
-
     data = request.get_json(silent=True)
 
     if not data:
@@ -179,19 +152,10 @@ def create_option(question_id):
         }), 400
 
 
-# =========================================================
-# UPDATE OPTION
-# PUT/PATCH /api/v2/options/<option_id>
-# =========================================================
-
-@api_v2.route(
-    "/options/<int:option_id>",
-    methods=["PUT", "PATCH"]
-)
+@api_v2.route("/options/<int:option_id>",methods=["PUT", "PATCH"])
 @jwt_required()
 @role_required("instructor")
 def update_option(option_id):
-
     data = request.get_json(silent=True)
 
     if not data:
@@ -230,19 +194,10 @@ def update_option(option_id):
         }), 404
 
 
-# =========================================================
-# DELETE OPTION
-# DELETE /api/v2/options/<option_id>
-# =========================================================
-
-@api_v2.route(
-    "/options/<int:option_id>",
-    methods=["DELETE"]
-)
+@api_v2.route("/options/<int:option_id>",methods=["DELETE"])
 @jwt_required()
 @role_required("instructor")
 def delete_option(option_id):
-
     try:
         option = option_service.get_option(
             option_id

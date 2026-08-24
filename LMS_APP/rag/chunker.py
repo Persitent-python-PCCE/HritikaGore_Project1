@@ -1,7 +1,4 @@
 def chunk_text(pages, chunk_size=800, overlap=150):
-    """ Split extracted PDF text into overlapping chunks.
-        Each chunk keeps its source filename and page number."""
-
     chunks = []
 
     for page in pages:

@@ -26,7 +26,6 @@ def login():
     password = data.get("password")
 
     try:
-
         user = auth_service.login_user(
             email,
             password

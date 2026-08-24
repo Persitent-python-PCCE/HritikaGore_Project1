@@ -18,14 +18,10 @@ course_dao = CourseDAO()
 course_service = CourseService(course_dao)
 
 
-@api_v2.route(
-    "/courses/<int:course_id>/materials",
-    methods=["GET"]
-)
+@api_v2.route("/courses/<int:course_id>/materials", methods=["GET"])
 @jwt_required()
 @role_required("student", "instructor", "admin")
 def get_course_materials(course_id):
-
     try:
         course = course_service.get_course(course_id)
 
@@ -35,8 +31,6 @@ def get_course_materials(course_id):
         claims = get_jwt()
         role = claims.get("role")
 
-        # Students can only access materials
-        # for courses they are enrolled in
         if role == "student":
             enrollment = enrollment_service.get_enrollment(
                 current_user_id,
@@ -70,14 +64,10 @@ def get_course_materials(course_id):
             "msg": str(e)
         }), 404
 
-@api_v2.route(
-    "/courses/<int:course_id>/materials",
-    methods=["POST"]
-)
+@api_v2.route("/courses/<int:course_id>/materials",methods=["POST"])
 @jwt_required()
 @role_required("instructor", "admin")
 def create_material(course_id):
-
     data = request.get_json(silent=True)
 
     if not data:
@@ -90,7 +80,6 @@ def create_material(course_id):
 
         current_user_id = int(get_jwt_identity())
 
-        # Instructor can only add materials to their own course
         claims = get_jwt()
         role = claims.get("role")
 
@@ -132,14 +121,10 @@ def create_material(course_id):
         }), 400
 
 
-@api_v2.route(
-    "/materials/<int:material_id>",
-    methods=["GET"]
-)
+@api_v2.route("/materials/<int:material_id>",methods=["GET"])
 @jwt_required()
 @role_required("student", "instructor", "admin")
 def get_material(material_id):
-
     try:
         material = material_service.get_material(material_id)
 
@@ -159,14 +144,10 @@ def get_material(material_id):
         }), 404
 
 
-@api_v2.route(
-    "/materials/<int:material_id>",
-    methods=["DELETE"]
-)
+@api_v2.route("/materials/<int:material_id>",methods=["DELETE"])
 @jwt_required()
 @role_required("instructor", "admin")
 def delete_material(material_id):
-
     try:
         material = material_service.get_material(material_id)
 
@@ -174,7 +155,6 @@ def delete_material(material_id):
 
         if material.uploaded_by != current_user_id:
 
-            # Check whether admin
             claims = {}
             try:
                 from flask_jwt_extended import get_jwt

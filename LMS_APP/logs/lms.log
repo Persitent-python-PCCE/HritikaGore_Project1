@@ -3,3 +3,38 @@
 2026-08-24 06:09:47,262 | INFO | app | User login successful | user_id=2 | role=instructor
 2026-08-24 06:11:17,110 | INFO | app | Courses viewed | user_id=2 | count=5
 2026-08-24 06:11:30,405 | INFO | app | User login successful | user_id=5 | role=student
+2026-08-24 06:22:42,363 | INFO | app | User login successful | user_id=2 | role=instructor
+2026-08-24 06:30:12,391 | INFO | app | Courses viewed | user_id=2 | count=5
+2026-08-24 06:30:27,211 | INFO | app | Courses viewed | user_id=2 | count=5
+2026-08-24 06:42:36,078 | INFO | app | User login successful | user_id=2 | role=instructor
+2026-08-24 06:42:39,932 | INFO | app | Courses viewed | user_id=2 | count=5
+2026-08-24 08:41:37,357 | INFO | app | LMS application logging initialized
+2026-08-24 08:50:33,402 | INFO | app | LMS application logging initialized
+2026-08-24 08:50:51,817 | INFO | app | LMS application logging initialized
+2026-08-24 08:53:36,510 | INFO | app | LMS application logging initialized
+2026-08-24 08:53:59,770 | INFO | app | LMS application logging initialized
+2026-08-24 09:00:46,327 | INFO | app | LMS application logging initialized
+2026-08-24 09:17:42,789 | INFO | app | LMS application logging initialized
+2026-08-24 09:46:59,600 | INFO | app | LMS application logging initialized
+2026-08-24 09:47:08,748 | INFO | app | LMS application logging initialized
+2026-08-24 09:47:12,379 | INFO | app | User login successful | user_id=5 | role=student
+2026-08-24 09:47:24,634 | INFO | app | Courses viewed | user_id=5 | count=5
+2026-08-24 09:48:16,053 | INFO | app | Courses viewed | user_id=5 | count=5
+2026-08-24 09:49:06,764 | INFO | app | Courses viewed | user_id=5 | count=5
+2026-08-24 09:50:00,693 | INFO | app | LMS application logging initialized
+2026-08-24 09:50:09,241 | INFO | app | LMS application logging initialized
+2026-08-24 09:50:24,645 | INFO | app | Courses viewed | user_id=5 | count=5
+2026-08-24 09:51:32,172 | INFO | app | LMS application logging initialized
+2026-08-24 09:51:51,465 | INFO | app | LMS application logging initialized
+2026-08-24 09:52:03,466 | INFO | app | LMS application logging initialized
+2026-08-24 09:52:04,858 | INFO | app | Courses viewed | user_id=5 | count=5
+2026-08-24 09:55:32,034 | INFO | app | LMS application logging initialized
+2026-08-24 10:01:40,926 | INFO | app | LMS application logging initialized
+2026-08-24 10:09:01,909 | INFO | app | LMS application logging initialized
+2026-08-24 10:12:43,094 | INFO | app | LMS application logging initialized
+2026-08-24 10:34:50,884 | INFO | app | User login successful | user_id=1 | role=admin
+2026-08-24 10:48:05,541 | INFO | app | LMS application logging initialized
+2026-08-24 10:54:03,224 | INFO | app | User login successful | user_id=5 | role=student
+2026-08-24 10:54:47,772 | INFO | app | Quiz submitted | quiz_id=3 | user_id=5 | score=1
+2026-08-24 10:55:39,196 | INFO | app | User login successful | user_id=2 | role=instructor
+2026-08-24 10:55:41,699 | INFO | app | Courses viewed | user_id=2 | count=5

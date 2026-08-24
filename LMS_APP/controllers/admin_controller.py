@@ -16,7 +16,6 @@ user_dao = UserDAO()
 
 admin_user_service = AdminUserService(user_dao)
 
-
 @admin_controller.route("/users")
 @jwt_required()
 @role_required("admin")

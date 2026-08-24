@@ -23,6 +23,7 @@ from services.lesson_service import LessonService
 
 from dao.progress_dao import ProgressDAO
 from services.progress_service import ProgressService
+
 from dao.course_dao import CourseDAO
 from services.course_service import CourseService
 
@@ -94,9 +95,8 @@ def login():
         "Failed login attempt | email=%s",
         email)
         return render_template("login.html",error=str(e))
+
     
-
-
 @auth_controller.route("/users")
 def users():
     users = user_dao.get_all_users()
@@ -120,7 +120,6 @@ def dashboard():
 
     if role == "student":
         student_id = session["user_id"]
-
         enrollments = enrollment_service.get_student_enrollment(student_id)
 
         my_courses = []

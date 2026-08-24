@@ -1,6 +1,5 @@
 import pytest
 
-
 def get_login_token(client):
     response = client.post(
         "/api/v2/auth/login",

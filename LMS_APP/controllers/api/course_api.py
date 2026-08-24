@@ -12,7 +12,6 @@ from services.course_service import CourseService
 
 from utils.rbac import role_required
 
-
 course_dao = CourseDAO()
 course_service = CourseService(course_dao)
 
